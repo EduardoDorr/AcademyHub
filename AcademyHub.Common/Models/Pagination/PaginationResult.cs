@@ -24,7 +24,7 @@ public class PaginationResult<T>
         TotalCount = totalCount;
         TotalPages = totalPages;
         Data = data;
-    }
+    }    
 
     public void SetTotalPages(int total) => TotalPages = total;
     public void SetData(List<T> values) => Data = values;

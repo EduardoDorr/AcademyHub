@@ -5,7 +5,7 @@ namespace AcademyHub.Common.ValueObjects;
 
 public sealed record Cpf
 {
-    public string Number { get; }
+    public string Number { get; } = string.Empty;
 
     private Cpf() { }
 
@@ -27,6 +27,11 @@ public sealed record Cpf
         var cpf = new Cpf(number);
 
         return Result<Cpf>.Ok(cpf);
+    }
+
+    public override string ToString()
+    {
+        return Number;
     }
 
     private static string FormatInput(string number)

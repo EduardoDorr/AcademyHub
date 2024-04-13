@@ -27,6 +27,11 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
+    public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email.Address == email && u.Password.Content == passwordHash);
+    }
+
     public async Task<bool> IsUniqueAsync(string cpf, string email, CancellationToken cancellationToken = default)
     {
         var hasUser = await _dbContext.Users.AnyAsync(u => u.Cpf.Number == cpf || u.Email.Address == email);

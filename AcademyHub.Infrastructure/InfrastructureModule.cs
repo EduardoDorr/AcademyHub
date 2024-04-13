@@ -7,6 +7,11 @@ using AcademyHub.Common.Persistence.DbConnectionFactories;
 
 using AcademyHub.Common.Auth;
 using AcademyHub.Domain.Users;
+using AcademyHub.Domain.Courses;
+using AcademyHub.Domain.Lessons;
+using AcademyHub.Domain.CourseModules;
+using AcademyHub.Domain.Subscriptions;
+using AcademyHub.Domain.LearningTracks;
 
 using AcademyHub.Infrastructure.Auth;
 using AcademyHub.Infrastructure.Interceptors;
@@ -55,6 +60,11 @@ public static class InfrastructureModule
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+        services.AddTransient<ILearningTrackRepository, LearningTrackRepository>();
+        services.AddTransient<ICourseRepository, CourseRepository>();
+        services.AddTransient<ICourseModuleRepository, CourseModuleRepository>();
+        services.AddTransient<ILessonRepository, LessonRepository>();
 
         return services;
     }

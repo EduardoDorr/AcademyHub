@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json.Serialization;
 
-using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -9,6 +8,7 @@ using Serilog;
 using Unchase.Swashbuckle.AspNetCore.Extensions.Extensions;
 
 using AcademyHub.Common;
+using AcademyHub.Common.Swagger;
 using AcademyHub.Common.Options;
 
 using AcademyHub.API.Middlewares;
@@ -37,7 +37,6 @@ public static class ServiceConfiguration
         builder.Services.AddInfrastructure(builder.Configuration);
         builder.Services.AddNotificationModule();
 
-
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
@@ -51,42 +50,9 @@ public static class ServiceConfiguration
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(s =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "AcademyHub.API",
-                Version = "v1",
-                Contact = new OpenApiContact
-                {
-                    Name = "Eduardo Dörr",
-                    Email = "edudorr@hotmail.com",
-                    Url = new Uri("https://github.com/EduardoDorr")
-                }
-            });
+            s.UseCommonSwaggerDoc("AcademyHub.API", "v1");
 
-            s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "JWT Authorization header using bearer scheme."
-            });
-
-            s.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
+            s.UseCommonAuthorizationBearer();
 
             s.AddEnumsWithValuesFixFilters();
         });

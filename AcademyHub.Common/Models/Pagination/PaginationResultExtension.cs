@@ -27,4 +27,16 @@ public static class PaginationResultExtension
 
         return result;
     }
+
+    public static PaginationResult<T> Map<P, T>(this PaginationResult<P> pagination, List<T> data)
+    {
+        return new PaginationResult<T>
+            (
+                pagination.Page,
+                pagination.PageSize,
+                pagination.TotalCount,
+                pagination.TotalPages,
+                data
+            );
+    }
 }

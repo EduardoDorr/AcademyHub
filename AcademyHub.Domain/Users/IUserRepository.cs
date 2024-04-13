@@ -7,5 +7,6 @@ public interface IUserRepository
       ICreatableRepository<User>,
       IUpdatableRepository<User>
 {
+    Task<User?> GetUserByEmailAndPasswordAsync(string email, string passwordHash);
     Task<bool> IsUniqueAsync(string cpf, string email, CancellationToken cancellationToken = default);
 }

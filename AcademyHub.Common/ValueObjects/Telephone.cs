@@ -7,7 +7,7 @@ namespace AcademyHub.Common.ValueObjects;
 
 public sealed partial record Telephone
 {
-    public string Number { get; }
+    public string Number { get; } = string.Empty;
 
     private const string _pattern = @"^[0-9]{10,11}$";
 
@@ -31,6 +31,11 @@ public sealed partial record Telephone
         var telephone = new Telephone(number);
 
         return Result.Ok(telephone);
+    }
+
+    public override string ToString()
+    {
+        return Number;
     }
 
     private static string FormatInput(string number)

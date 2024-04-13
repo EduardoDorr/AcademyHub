@@ -3,7 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace AcademyHub.Application;
 
@@ -11,10 +11,18 @@ public static class ApplicationModule
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMediator()
+        services.AddMappings()
+                .AddMediator()
                 .AddValidator()
                 .AddServices()
                 .AddBackgroundJobs();
+
+        return services;
+    }
+
+    private static IServiceCollection AddMappings(this IServiceCollection services)
+    {
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         return services;
     }

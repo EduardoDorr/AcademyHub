@@ -85,7 +85,7 @@ public sealed class User : BaseEntity, ILogin
         return Result<User>.Ok(user);
     }
 
-    public Result Update(string firstName, string lastName, string email, string telephone, string password, string role)
+    public Result Update(string firstName, string lastName, string email, string telephone)
     {
         var emailResult = Email.Create(email);
 
@@ -97,17 +97,10 @@ public sealed class User : BaseEntity, ILogin
         if (!telephoneResult.Success)
             return Result.Fail(telephoneResult.Errors);
 
-        var passwordResult = Password.Create(password);
-
-        if (!passwordResult.Success)
-            return Result.Fail(passwordResult.Errors);
-
         FirstName = firstName;
         LastName = lastName;
         Email = emailResult.Value;
         Telephone = telephoneResult.Value;
-        Password = passwordResult.Value;
-        Role = role;
 
         return Result.Ok();
     }
