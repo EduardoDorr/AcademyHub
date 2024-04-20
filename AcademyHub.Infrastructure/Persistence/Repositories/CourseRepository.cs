@@ -26,7 +26,9 @@ public class CourseRepository : ICourseRepository
 
     public async Task<Course?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Courses.SingleOrDefaultAsync(c => c.Id == id, cancellationToken);
+        return await _dbContext.Courses
+            .Include(c => c.CourseModules).ThenInclude(c => c.Lessons)
+            .SingleOrDefaultAsync(c => c.Id == id, cancellationToken);
     }
 
     public async Task<bool> IsUniqueAsync(string name, CancellationToken cancellationToken = default)

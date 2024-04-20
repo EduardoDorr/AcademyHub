@@ -24,8 +24,7 @@ internal class CourseConfiguration : BaseEntityConfiguration<Course>
             .IsRequired();
 
         builder.Property(b => b.Cover)
-            .HasMaxLength(200)
-            .IsRequired();
+            .HasMaxLength(200);
 
         builder.HasMany(b => b.LearningTracks)
             .WithMany(b => b.Courses);

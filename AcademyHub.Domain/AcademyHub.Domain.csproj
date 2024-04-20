@@ -10,4 +10,8 @@
     <ProjectReference Include="..\AcademyHub.Common\AcademyHub.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Payments\" />
+  </ItemGroup>
+
 </Project>

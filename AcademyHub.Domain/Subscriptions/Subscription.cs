@@ -61,6 +61,6 @@ public sealed class Subscription : BaseEntity
             return;
 
         foreach (var learningTrack in learningTracks)
-            LearningTracks.Single(s => s == learningTrack).Deactivate();
+            LearningTracks.Remove(learningTrack);
     }
 }

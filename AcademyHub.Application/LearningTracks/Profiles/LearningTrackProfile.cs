@@ -10,7 +10,13 @@ internal sealed class LearningTrackProfile : Profile
 {
     public LearningTrackProfile()
     {
-        CreateMap<LearningTrack, LearningTrackDetailsViewModel>();
+        CreateMap<LearningTrack, LearningTrackDetailsViewModel>()
+            .ForCtorParam("Duration",
+                          opt => opt.MapFrom(
+                              src => src.Courses.Sum(
+                                  c => c.CourseModules.Sum(
+                                      m => m.Lessons.Sum(
+                                          lesson => lesson.Duration)))));
         CreateMap<LearningTrack, LearningTrackViewModel>();
         CreateMap<UpdateLearningTrackInputModel, UpdateLearningTrackCommand>();
     }

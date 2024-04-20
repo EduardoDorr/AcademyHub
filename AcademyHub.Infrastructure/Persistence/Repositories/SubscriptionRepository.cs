@@ -26,7 +26,12 @@ public class SubscriptionRepository : ISubscriptionRepository
 
     public async Task<Subscription?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Subscriptions.SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
+        return await _dbContext.Subscriptions
+            .Include(c => c.LearningTracks)
+            .ThenInclude(c => c.Courses)
+            .ThenInclude(c => c.CourseModules)
+            .ThenInclude(c => c.Lessons)
+            .SingleOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
     public async Task<bool> IsUniqueAsync(string name, CancellationToken cancellationToken = default)

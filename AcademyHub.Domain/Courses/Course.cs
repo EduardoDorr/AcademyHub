@@ -66,6 +66,6 @@ public sealed class Course : BaseEntity
             return;
 
         foreach (var courseModule in courseModules)
-            CourseModules.Single(s => s == courseModule).Deactivate();
+            CourseModules.Remove(courseModule);
     }
 }

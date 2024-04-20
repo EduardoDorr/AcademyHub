@@ -71,6 +71,9 @@ internal class UserConfiguration : BaseEntityConfiguration<User>
             .HasMaxLength(25)
             .IsRequired();
 
+        builder.Property(b => b.PaymentGatewayClientId)
+            .HasMaxLength(20);
+
         builder.HasMany(b => b.Enrollments)
             .WithOne(b => b.User)
             .HasForeignKey(b => b.UserId);

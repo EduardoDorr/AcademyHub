@@ -107,6 +107,7 @@ public static class ServiceConfiguration
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<AsaasApiOptions>(options => configuration.GetSection(OptionsConstants.AsaasApiSection).Bind(options));
         services.Configure<WebMailApiOptions>(options => configuration.GetSection(OptionsConstants.WebMailApiSection).Bind(options));
         services.Configure<AuthenticationOptions>(options => configuration.GetSection(OptionsConstants.AuthenticationSection).Bind(options));
         services.Configure<RabbitMqConfigurationOptions>(options => configuration.GetSection(OptionsConstants.RabbitMQConfigurationSection).Bind(options));

@@ -26,7 +26,11 @@ public class LearningTrackRepository : ILearningTrackRepository
 
     public async Task<LearningTrack?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.LearningTracks.SingleOrDefaultAsync(l => l.Id == id, cancellationToken);
+        return await _dbContext.LearningTracks
+            .Include(c => c.Courses)
+            .ThenInclude(c => c.CourseModules)
+            .ThenInclude(c => c.Lessons)
+            .SingleOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     public async Task<bool> IsUniqueAsync(string name, CancellationToken cancellationToken = default)

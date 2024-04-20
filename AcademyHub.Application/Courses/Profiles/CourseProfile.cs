@@ -10,7 +10,9 @@ internal sealed class CourseProfile : Profile
 {
     public CourseProfile()
     {
-        CreateMap<Course, CourseDetailsViewModel>();
+        CreateMap<Course, CourseDetailsViewModel>()
+            .ForCtorParam("Duration", 
+                          opt => opt.MapFrom(src => src.CourseModules.Sum(m => m.Lessons.Sum(lesson => lesson.Duration))));
         CreateMap<Course, CourseViewModel>();
         CreateMap<UpdateCourseInputModel, UpdateCourseCommand>();
     }

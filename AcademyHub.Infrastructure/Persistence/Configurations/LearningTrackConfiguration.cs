@@ -24,8 +24,7 @@ internal class LearningTrackConfiguration : BaseEntityConfiguration<LearningTrac
             .IsRequired();
 
         builder.Property(b => b.Cover)
-            .HasMaxLength(200)
-            .IsRequired();
+            .HasMaxLength(200);
 
         builder.HasMany(b => b.Subscriptions)
             .WithMany(b => b.LearningTracks);

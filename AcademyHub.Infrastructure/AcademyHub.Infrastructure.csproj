@@ -10,6 +10,7 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
@@ -24,8 +25,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AcademyHub.Application\AcademyHub.Application.csproj" />
     <ProjectReference Include="..\AcademyHub.Common\AcademyHub.Common.csproj" />
     <ProjectReference Include="..\AcademyHub.Domain\AcademyHub.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Integrations\Webhooks\" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@ using AcademyHub.Common.Auth;
 using AcademyHub.Common.Results;
 using AcademyHub.API.Extensions;
 using AcademyHub.Application.LearningTracks.Models;
+using AcademyHub.Application.LearningTracks.AddCourse;
+using AcademyHub.Application.LearningTracks.RemoveCourse;
 using AcademyHub.Application.LearningTracks.GetLearningTracks;
 using AcademyHub.Application.LearningTracks.GetLearningTrackById;
 using AcademyHub.Application.LearningTracks.CreateLearningTrack;
@@ -102,6 +104,48 @@ public class LearningTracksController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _sender.Send(new DeleteLearningTrackCommand(id));
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/add-courses")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddCourses(Guid id, [FromBody] IList<Guid> coursesId)
+    {
+        var command =
+            new AddCourseCommand(
+                id,
+                coursesId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/remove-courses")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RemoveCourses(Guid id, [FromBody] IList<Guid> coursesId)
+    {
+        var command =
+            new RemoveCourseCommand(
+                id,
+                coursesId);
+
+        var result = await _sender.Send(command);
 
         return result.Match(
         onSuccess: NoContent,

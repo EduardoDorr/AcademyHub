@@ -7,6 +7,8 @@ using AcademyHub.Common.Auth;
 using AcademyHub.Common.Results;
 using AcademyHub.API.Extensions;
 using AcademyHub.Application.Courses.Models;
+using AcademyHub.Application.Courses.AddModule;
+using AcademyHub.Application.Courses.RemoveModule;
 using AcademyHub.Application.Courses.GetCourses;
 using AcademyHub.Application.Courses.GetCourseById;
 using AcademyHub.Application.Courses.CreateCourse;
@@ -102,6 +104,48 @@ public class CoursesController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _sender.Send(new DeleteCourseCommand(id));
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/add-courseModules")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddCourseModules(Guid id, [FromBody] IList<Guid> courseModulesId)
+    {
+        var command =
+            new AddCourseModuleCommand(
+                id,
+                courseModulesId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/remove-courseModules")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RemoveCourseModules(Guid id, [FromBody] IList<Guid> courseModulesId)
+    {
+        var command =
+            new RemoveCourseModuleCommand(
+                id,
+                courseModulesId);
+
+        var result = await _sender.Send(command);
 
         return result.Match(
         onSuccess: NoContent,

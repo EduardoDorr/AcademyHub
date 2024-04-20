@@ -41,7 +41,7 @@ public sealed class CourseModule : BaseEntity
         Description = description;
     }
 
-    public void AddModules(IList<Lesson>? lessons)
+    public void AddLessons(IList<Lesson>? lessons)
     {
         if (lessons is null)
             return;
@@ -49,12 +49,12 @@ public sealed class CourseModule : BaseEntity
         Lessons.AddRange(lessons);
     }
 
-    public void RemoveModules(IList<Lesson>? lessons)
+    public void RemoveLessons(IList<Lesson>? lessons)
     {
         if (lessons is null)
             return;
 
         foreach (var lesson in lessons)
-            Lessons.Single(s => s == lesson).Deactivate();
+            Lessons.Remove(lesson);
     }
 }

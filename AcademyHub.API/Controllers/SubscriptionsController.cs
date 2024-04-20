@@ -7,6 +7,8 @@ using AcademyHub.Common.Auth;
 using AcademyHub.Common.Results;
 using AcademyHub.API.Extensions;
 using AcademyHub.Application.Subscriptions.Models;
+using AcademyHub.Application.Subscriptions.AddLearningTrack;
+using AcademyHub.Application.Subscriptions.RemoveLearningTrack;
 using AcademyHub.Application.Subscriptions.GetSubscriptions;
 using AcademyHub.Application.Subscriptions.GetSubscriptionById;
 using AcademyHub.Application.Subscriptions.CreateSubscription;
@@ -103,6 +105,48 @@ public class SubscriptionsController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _sender.Send(new DeleteSubscriptionCommand(id));
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/add-learningTracks")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddLearningTracks(Guid id, [FromBody] IList<Guid> learningTracksId)
+    {
+        var command =
+            new AddLearningTrackCommand(
+                id,
+                learningTracksId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/remove-learningTracks")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RemoveLearningTracks(Guid id, [FromBody] IList<Guid> learningTracksId)
+    {
+        var command =
+            new RemoveLearningTrackCommand(
+                id,
+                learningTracksId);
+
+        var result = await _sender.Send(command);
 
         return result.Match(
         onSuccess: NoContent,

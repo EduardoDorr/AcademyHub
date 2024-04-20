@@ -48,7 +48,7 @@ public sealed class LearningTrack : BaseEntity
         Cover = cover;
     }
 
-    public void AddModules(IList<Course>? courses)
+    public void AddCourses(IList<Course>? courses)
     {
         if (courses is null)
             return;
@@ -56,12 +56,12 @@ public sealed class LearningTrack : BaseEntity
         Courses.AddRange(courses);
     }
 
-    public void RemoveModules(IList<Course>? courses)
+    public void RemoveCourses(IList<Course>? courses)
     {
         if (courses is null)
             return;
 
         foreach (var course in courses)
-            Courses.Single(s => s == course).Deactivate();
+            Courses.Remove(course);
     }
 }

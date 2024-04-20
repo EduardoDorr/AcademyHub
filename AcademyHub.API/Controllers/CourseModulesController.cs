@@ -7,6 +7,8 @@ using AcademyHub.Common.Auth;
 using AcademyHub.Common.Results;
 using AcademyHub.API.Extensions;
 using AcademyHub.Application.CourseModules.Models;
+using AcademyHub.Application.CourseModules.AddLesson;
+using AcademyHub.Application.CourseModules.RemoveLesson;
 using AcademyHub.Application.CourseModules.GetCourseModules;
 using AcademyHub.Application.CourseModules.GetCourseModuleById;
 using AcademyHub.Application.CourseModules.CreateCourseModule;
@@ -77,6 +79,7 @@ public class CourseModulesController : ControllerBase
     [Authorize(Roles = AuthConstants.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCourseModuleInputModel model)
@@ -98,10 +101,53 @@ public class CourseModulesController : ControllerBase
     [Authorize(Roles = AuthConstants.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _sender.Send(new DeleteCourseModuleCommand(id));
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/add-lessons")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> AddLessons(Guid id, [FromBody] IList<Guid> lessonsId)
+    {
+        var command =
+            new AddLessonCommand(
+                id,
+                lessonsId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+        onSuccess: NoContent,
+        onFailure: value => value.ToProblemDetails());
+    }
+
+    [HttpPut("{id}/remove-lessons")]
+    [Authorize(Roles = AuthConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> RemoveLessons(Guid id, [FromBody] IList<Guid> lessonsId)
+    {
+        var command =
+            new RemoveLessonCommand(
+                id,
+                lessonsId);
+
+        var result = await _sender.Send(command);
 
         return result.Match(
         onSuccess: NoContent,

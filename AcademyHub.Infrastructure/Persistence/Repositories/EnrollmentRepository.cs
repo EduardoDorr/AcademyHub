@@ -26,7 +26,10 @@ public class EnrollmentRepository : IEnrollmentRepository
 
     public async Task<Enrollment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Enrollments.SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
+        return await _dbContext.Enrollments
+            .Include(c => c.User)
+            .Include(c => c.Subscription)
+            .SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
     public async Task<bool> IsUniqueAsync(Guid userId, Guid subscriptionId, CancellationToken cancellationToken = default)

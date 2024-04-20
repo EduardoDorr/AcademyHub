@@ -7,4 +7,5 @@ public sealed record CourseDetailsViewModel(
     string Name,
     string Description,
     string? Cover,
+    int Duration,
     IReadOnlyCollection<CourseModuleDetailsViewModel> CourseModules);

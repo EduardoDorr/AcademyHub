@@ -39,7 +39,7 @@ namespace AcademyHub.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Cover = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Cover = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
@@ -57,7 +57,7 @@ namespace AcademyHub.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Cover = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Cover = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false)
@@ -174,25 +174,25 @@ namespace AcademyHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseLearningTrack",
+                name: "LearningTrackCourse",
                 schema: "AcademyHub",
                 columns: table => new
                 {
-                    CoursesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LearningTracksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    LearningTracksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CoursesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseLearningTrack", x => new { x.CoursesId, x.LearningTracksId });
+                    table.PrimaryKey("PK_LearningTrackCourse", x => new { x.LearningTracksId, x.CoursesId});
                     table.ForeignKey(
-                        name: "FK_CourseLearningTrack_Courses_CoursesId",
+                        name: "FK_LearningTrackCourse_Courses_CoursesId",
                         column: x => x.CoursesId,
                         principalSchema: "AcademyHub",
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseLearningTrack_LearningTracks_LearningTracksId",
+                        name: "FK_LearningTrackCourse_LearningTracks_LearningTracksId",
                         column: x => x.LearningTracksId,
                         principalSchema: "AcademyHub",
                         principalTable: "LearningTracks",
@@ -228,25 +228,25 @@ namespace AcademyHub.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LearningTrackSubscription",
+                name: "SubscriptionLearningTrack",
                 schema: "AcademyHub",
                 columns: table => new
                 {
-                    LearningTracksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SubscriptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LearningTracksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LearningTrackSubscription", x => new { x.LearningTracksId, x.SubscriptionsId });
+                    table.PrimaryKey("PK_LearningTrackSubscription", x => new { x.SubscriptionsId, x.LearningTracksId});
                     table.ForeignKey(
-                        name: "FK_LearningTrackSubscription_LearningTracks_LearningTracksId",
+                        name: "FK_SubscriptionLearningTrack_LearningTracks_LearningTracksId",
                         column: x => x.LearningTracksId,
                         principalSchema: "AcademyHub",
                         principalTable: "LearningTracks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LearningTrackSubscription_Subscriptions_SubscriptionsId",
+                        name: "FK_SubscriptionLearningTrack_Subscriptions_SubscriptionsId",
                         column: x => x.SubscriptionsId,
                         principalSchema: "AcademyHub",
                         principalTable: "Subscriptions",
@@ -329,9 +329,9 @@ namespace AcademyHub.Infrastructure.Migrations
                 column: "CoursesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseLearningTrack_LearningTracksId",
+                name: "IX_LearningTrackCourse_LearningTracksId",
                 schema: "AcademyHub",
-                table: "CourseLearningTrack",
+                table: "LearningTrackCourse",
                 column: "LearningTracksId");
 
             migrationBuilder.CreateIndex(
@@ -398,9 +398,9 @@ namespace AcademyHub.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LearningTrackSubscription_SubscriptionsId",
+                name: "IX_SubscriptionLearningTrack_SubscriptionsId",
                 schema: "AcademyHub",
-                table: "LearningTrackSubscription",
+                table: "SubscriptionLearningTrack",
                 column: "SubscriptionsId");
 
             migrationBuilder.CreateIndex(
@@ -476,7 +476,7 @@ namespace AcademyHub.Infrastructure.Migrations
                 schema: "AcademyHub");
 
             migrationBuilder.DropTable(
-                name: "CourseLearningTrack",
+                name: "LearningTrackCourse",
                 schema: "AcademyHub");
 
             migrationBuilder.DropTable(
@@ -488,7 +488,7 @@ namespace AcademyHub.Infrastructure.Migrations
                 schema: "AcademyHub");
 
             migrationBuilder.DropTable(
-                name: "LearningTrackSubscription",
+                name: "SubscriptionLearningTrack",
                 schema: "AcademyHub");
 
             migrationBuilder.DropTable(

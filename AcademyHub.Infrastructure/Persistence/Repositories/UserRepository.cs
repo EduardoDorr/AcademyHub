@@ -24,7 +24,10 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+        return await _dbContext.Users
+            .Include(c => c.Enrollments)
+            .Include(c => c.LessonFinisheds)
+            .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
     public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
