@@ -14,6 +14,7 @@ using AcademyHub.Domain.CourseModules;
 using AcademyHub.Domain.Subscriptions;
 using AcademyHub.Domain.LearningTracks;
 using AcademyHub.Domain.LessonFinisheds;
+using AcademyHub.Domain.EnrollmentPayments;
 
 namespace AcademyHub.Infrastructure.Persistence.Contexts;
 
@@ -22,6 +23,7 @@ public class AcademyHubDbContext : DbContext
     public DbSet<CourseModule> CourseModules { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
+    public DbSet<EnrollmentPayment> EnrollmentPayments { get; set; }
     public DbSet<LearningTrack> LearningTracks { get; set; }
     public DbSet<LessonFinished> LessonFinisheds { get; set; }
     public DbSet<Lesson> Lessons { get; set; }

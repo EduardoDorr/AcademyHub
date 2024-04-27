@@ -9,9 +9,13 @@ using AcademyHub.Common.Auth;
 using AcademyHub.Domain.Users;
 using AcademyHub.Domain.Courses;
 using AcademyHub.Domain.Lessons;
+using AcademyHub.Domain.Enrollments;
 using AcademyHub.Domain.CourseModules;
 using AcademyHub.Domain.Subscriptions;
 using AcademyHub.Domain.LearningTracks;
+using AcademyHub.Domain.EnrollmentPayments;
+
+using AcademyHub.Application.Abstractions.PaymentGateway;
 
 using AcademyHub.Infrastructure.Auth;
 using AcademyHub.Infrastructure.Interceptors;
@@ -19,6 +23,7 @@ using AcademyHub.Infrastructure.BackgroundJobs;
 using AcademyHub.Infrastructure.Persistence.Contexts;
 using AcademyHub.Infrastructure.Persistence.UnitOfWork;
 using AcademyHub.Infrastructure.Persistence.Repositories;
+using AcademyHub.Infrastructure.Integrations.Asaas.Apis;
 
 namespace AcademyHub.Infrastructure;
 
@@ -31,7 +36,8 @@ public static class InfrastructureModule
                 .AddRepositories()
                 .AddUnitOfWork()
                 .AddAuthentication()
-                .AddBackgroundJobs();
+                .AddBackgroundJobs()
+                .AddIntegrations();
 
         return services;
     }
@@ -65,6 +71,8 @@ public static class InfrastructureModule
         services.AddTransient<ICourseRepository, CourseRepository>();
         services.AddTransient<ICourseModuleRepository, CourseModuleRepository>();
         services.AddTransient<ILessonRepository, LessonRepository>();
+        services.AddTransient<IEnrollmentRepository, EnrollmentRepository>();
+        services.AddTransient<IEnrollmentPaymentRepository, EnrollmentPaymentRepository>();
 
         return services;
     }
@@ -86,6 +94,13 @@ public static class InfrastructureModule
     private static IServiceCollection AddBackgroundJobs(this IServiceCollection services)
     {
         services.AddHostedService<ProcessOutboxMessagesJob>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddIntegrations(this IServiceCollection services)
+    {
+        services.AddTransient<IPaymentGateway, AsaasPaymentGatewayApi>();
 
         return services;
     }

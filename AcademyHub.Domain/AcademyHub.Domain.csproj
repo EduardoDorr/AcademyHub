@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AcademyHub.Common\AcademyHub.Common.csproj" />
+    <Compile Remove="Payments\**" />
+    <EmbeddedResource Remove="Payments\**" />
+    <None Remove="Payments\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Payments\" />
+    <ProjectReference Include="..\AcademyHub.Common\AcademyHub.Common.csproj" />
   </ItemGroup>
 
 </Project>

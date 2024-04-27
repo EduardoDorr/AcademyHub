@@ -1,5 +1,6 @@
-﻿using AcademyHub.Application.Abstractions.Models;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+
+using AcademyHub.Application.Abstractions.Models;
 
 namespace AcademyHub.Infrastructure.Integrations.Asaas.Dtos.Payments;
 
@@ -47,7 +48,7 @@ internal sealed class PaymentDtoResponse
 
 internal sealed class Discount
 {
-    public int value { get; set; }
+    public decimal value { get; set; }
     public string? limitDate { get; set; }
     public int dueDateLimitDays { get; set; }
     public string? type { get; set; }
@@ -55,13 +56,13 @@ internal sealed class Discount
 
 internal sealed class Fine
 {
-    public int value { get; set; }
+    public decimal value { get; set; }
     public string? type { get; set; }
 }
 
 internal sealed class Interest
 {
-    public int value { get; set; }
+    public decimal value { get; set; }
     public string? type { get; set; }
 }
 

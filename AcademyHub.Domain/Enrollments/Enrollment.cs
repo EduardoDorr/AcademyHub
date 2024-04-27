@@ -1,9 +1,9 @@
 ﻿using AcademyHub.Common.Results;
 using AcademyHub.Common.Entities;
-using AcademyHub.Common.DomainEvents;
 
 using AcademyHub.Domain.Users;
 using AcademyHub.Domain.Subscriptions;
+using AcademyHub.Domain.EnrollmentPayments;
 
 namespace AcademyHub.Domain.Enrollments;
 
@@ -17,6 +17,7 @@ public sealed class Enrollment : BaseEntity
 
     public User User { get; private set; }
     public Subscription Subscription { get; private set; }
+    public EnrollmentPayment EnrollmentPayment { get; private set; }
 
     protected Enrollment() { }
 
@@ -37,7 +38,8 @@ public sealed class Enrollment : BaseEntity
         Guid userId,
         Guid subscriptionId,
         DateTime startDate,
-        DateTime expirationDate)
+        DateTime expirationDate,
+        decimal value)
     {
         if (!ValidateStartAndExpirationDates(startDate, expirationDate))
             return Result.Fail<Enrollment>(EnrollmentErrors.ExpirationDateIsInvalid);
@@ -48,6 +50,14 @@ public sealed class Enrollment : BaseEntity
                 subscriptionId,
                 startDate,
                 expirationDate);
+
+        var createdEvent =
+            new EnrollmentCreatedEvent(
+                enrollment.Id,
+                startDate.AddDays(7),
+                value);
+
+        enrollment.RaiseDomainEvent(createdEvent);
 
         return Result<Enrollment>.Ok(enrollment);
     }
@@ -63,23 +73,14 @@ public sealed class Enrollment : BaseEntity
         return Result.Ok();
     }
 
-    public void SetActivedStatus()
-    {
+    public void SetActivedStatus() =>
         Status = EnrollmentStatus.Actived;
-    }
 
-    public void SetDeactivedStatus()
-    {
+    public void SetDeactivedStatus() =>
         Status = EnrollmentStatus.Deactived;
-    }
 
-    public void SetExpiredStatus()
-    {
+    public void SetExpiredStatus() =>
         Status = EnrollmentStatus.Expired;
-    }
-
-    public void RaiseEvent(IDomainEvent domainEvent) =>
-        RaiseDomainEvent(domainEvent);
 
     private static bool ValidateStartAndExpirationDates(DateTime startDate, DateTime expirationDate)
     {

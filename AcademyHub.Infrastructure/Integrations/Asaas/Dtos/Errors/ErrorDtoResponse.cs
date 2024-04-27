@@ -1,10 +1,15 @@
-﻿using AcademyHub.Common.Results.Errors;
+﻿using System.Text.Json.Serialization;
+
+using AcademyHub.Common.Results.Errors;
 
 namespace AcademyHub.Infrastructure.Integrations.Asaas.Dtos.Errors;
 
-internal sealed record ErrorDtoResponse(Error[] Errors);
+internal sealed record ErrorDtoResponse(
+    [property: JsonPropertyName("errors")] IReadOnlyList<Error> Errors);
 
-internal sealed record Error(string Code, string Description);
+internal sealed record Error(
+        [property: JsonPropertyName("code")] string Code,
+        [property: JsonPropertyName("description")] string Description);
 
 internal static class ErrorDtoResponseExtension
 {

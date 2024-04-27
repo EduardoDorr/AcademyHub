@@ -27,8 +27,8 @@ internal class AsaasPaymentGatewayApi : IPaymentGateway
     {
         _apiKey = asaasApiOptions.Value.ApiKey;
         _baseUrl = asaasApiOptions.Value.BaseUrl;
-        _baseUrl = asaasApiOptions.Value.CustomerEndpoint;
-        _baseUrl = asaasApiOptions.Value.PaymentEndpoint;
+        _customerEndpoint = asaasApiOptions.Value.CustomerEndpoint;
+        _paymentEndpoint = asaasApiOptions.Value.PaymentEndpoint;
 
         _headers = new Dictionary<string, string>
         {
@@ -38,7 +38,8 @@ internal class AsaasPaymentGatewayApi : IPaymentGateway
 
     public async Task<Result<string?>> CreateClientAsync(CustomerModel model)
     {
-        var json = JsonSerializer.Serialize(model);
+        var customerDtoRequest = model.FromModel();
+        var json = JsonSerializer.Serialize(customerDtoRequest);
 
         var response = await RestHelper
             .PostAsync<CustomerDtoResponse>(
@@ -73,7 +74,8 @@ internal class AsaasPaymentGatewayApi : IPaymentGateway
 
     public async Task<Result<CreatedPaymentModel?>> CreatePaymentAsync(CreatePaymentModel model)
     {
-        var json = JsonSerializer.Serialize(model);
+        var paymentDtoRequest = model.FromModel();
+        var json = JsonSerializer.Serialize(paymentDtoRequest);
 
         var response = await RestHelper
             .PostAsync<PaymentDtoResponse>(
