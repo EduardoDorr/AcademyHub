@@ -7,5 +7,5 @@ public interface IEnrollmentRepository
       ICreatableRepository<Enrollment>,
       IUpdatableRepository<Enrollment>
 {
-    Task<bool> IsUniqueAsync(Guid userId, Guid subscriptionId, CancellationToken cancellationToken = default);
+    Task<bool> IsUniqueAsync(Guid userId, Guid subscriptionId, CancellationToken cancellationToken = default);    
 }

@@ -4,7 +4,7 @@ using AcademyHub.Application.Abstractions.Models;
 
 namespace AcademyHub.Infrastructure.Integrations.Asaas.Dtos.Payments;
 
-internal sealed class PaymentDtoResponse
+public sealed class PaymentDtoResponse
 {
     [JsonPropertyName("object")]
     public string? @object { get; set; }
@@ -12,16 +12,18 @@ internal sealed class PaymentDtoResponse
     public string? dateCreated { get; set; }
     public string? customer { get; set; }
     public string? paymentLink { get; set; }
-    public int value { get; set; }
-    public float netValue { get; set; }
+    public decimal value { get; set; }
+    public decimal netValue { get; set; }
     public string? originalValue { get; set; }
     public string? interestValue { get; set; }
     public string? description { get; set; }
     public string? billingType { get; set; }
+    public bool canBePaidAfterDueDate { get; set; }
+    public string? confirmedDate { get; set; }
     public string? pixTransaction { get; set; }
     public string? status { get; set; }
     public string? dueDate { get; set; }
-    public string? originalDueDate { get; set; }
+    public string? originalDueDate { get; set; }    
     public string? paymentDate { get; set; }
     public string? clientPaymentDate { get; set; }
     public string? installmentNumber { get; set; }
@@ -46,7 +48,7 @@ internal sealed class PaymentDtoResponse
     public string? refunds { get; set; }
 }
 
-internal sealed class Discount
+public sealed class Discount
 {
     public decimal value { get; set; }
     public string? limitDate { get; set; }
@@ -54,19 +56,19 @@ internal sealed class Discount
     public string? type { get; set; }
 }
 
-internal sealed class Fine
+public sealed class Fine
 {
     public decimal value { get; set; }
     public string? type { get; set; }
 }
 
-internal sealed class Interest
+public sealed class Interest
 {
     public decimal value { get; set; }
     public string? type { get; set; }
 }
 
-internal static class PaymentDtoResponseExtension
+public static class PaymentDtoResponseExtension
 {
     internal static CreatedPaymentModel ToModel(this PaymentDtoResponse response) =>
         new(response.id, response.invoiceUrl);

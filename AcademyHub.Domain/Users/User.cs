@@ -16,7 +16,7 @@ public sealed class User : BaseEntity, ILogin
     public Telephone Telephone { get; private set; }
     public Password Password { get; private set; }
     public string Role { get; private set; }
-    public string PaymentGatewayClientId { get; private set; }
+    public string? PaymentGatewayClientId { get; private set; }
 
     public List<Enrollment> Enrollments { get; private set; } = [];
     public List<LessonFinished> LessonFinisheds { get; private set; } = [];

@@ -55,9 +55,12 @@ public sealed class Lesson : BaseEntity
         Duration = duration;
     }
 
-    public void UpdateRating(decimal averageRating, int numberOfRatings)
+    public void UpdateRating(LessonFinishedRating rating)
     {
-        AverageRating = averageRating;
-        NumberOfRatings = numberOfRatings;
+        var currentRatingSum = AverageRating * NumberOfRatings;
+
+        NumberOfRatings++;
+
+        AverageRating = (currentRatingSum + (decimal)rating) / NumberOfRatings;
     }
 }

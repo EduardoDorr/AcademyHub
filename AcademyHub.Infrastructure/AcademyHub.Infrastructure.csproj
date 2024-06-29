@@ -30,8 +30,4 @@
     <ProjectReference Include="..\AcademyHub.Domain\AcademyHub.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Integrations\Webhooks\" />
-  </ItemGroup>
-
 </Project>

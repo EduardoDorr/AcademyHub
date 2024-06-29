@@ -31,7 +31,7 @@ public class LessonFinishedRepository : ILessonFinishedRepository
 
     public async Task<bool> IsUniqueAsync(Guid userId, Guid lessonId, CancellationToken cancellationToken = default)
     {
-        var hasUser = await _dbContext.LessonFinisheds.AnyAsync(l => l.UserId == userId && l.LessonId == lessonId);
+        var hasUser = await _dbContext.LessonFinisheds.AnyAsync(l => l.UserId == userId && l.LessonId == lessonId, cancellationToken);
 
         return !hasUser;
     }

@@ -24,6 +24,7 @@ using AcademyHub.Infrastructure.Persistence.Contexts;
 using AcademyHub.Infrastructure.Persistence.UnitOfWork;
 using AcademyHub.Infrastructure.Persistence.Repositories;
 using AcademyHub.Infrastructure.Integrations.Asaas.Apis;
+using AcademyHub.Domain.LessonFinisheds;
 
 namespace AcademyHub.Infrastructure;
 
@@ -71,6 +72,7 @@ public static class InfrastructureModule
         services.AddTransient<ICourseRepository, CourseRepository>();
         services.AddTransient<ICourseModuleRepository, CourseModuleRepository>();
         services.AddTransient<ILessonRepository, LessonRepository>();
+        services.AddTransient<ILessonFinishedRepository, LessonFinishedRepository>();
         services.AddTransient<IEnrollmentRepository, EnrollmentRepository>();
         services.AddTransient<IEnrollmentPaymentRepository, EnrollmentPaymentRepository>();
 

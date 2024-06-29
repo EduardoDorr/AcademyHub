@@ -1,6 +1,6 @@
 ﻿using AcademyHub.Common.Results.Errors;
 
-namespace AcademyHub.Domain.Enrollments;
+namespace AcademyHub.Domain.EnrollmentPayments;
 
 public sealed record EnrollmentPaymentErrors(string Code, string Message, ErrorType Type) : IError
 {

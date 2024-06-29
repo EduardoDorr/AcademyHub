@@ -30,6 +30,12 @@ public class UserRepository : IUserRepository
             .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
+    public async Task<User?> GetByExternalId(string externalId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users
+            .SingleOrDefaultAsync(u => u.PaymentGatewayClientId == externalId, cancellationToken);
+    }
+
     public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
     {
         return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email.Address == email && u.Password.Content == passwordHash);

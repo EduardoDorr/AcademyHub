@@ -2,8 +2,8 @@
 
 public enum EnrollmentPaymentStatus
 {
-    Pending,
-    Success,
-    Fail,
-    Late
+    Pending = 1,
+    Success = 2,
+    Fail = 3,
+    Overdue = 4
 }

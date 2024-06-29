@@ -30,6 +30,7 @@ public class AcademyHubDbContext : DbContext
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    //public DbSet<IntegrationEvent> IntegrationEvents { get; set; }
 
     public AcademyHubDbContext(DbContextOptions<AcademyHubDbContext> options) : base(options) { }
 

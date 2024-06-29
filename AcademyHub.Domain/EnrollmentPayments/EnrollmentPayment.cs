@@ -50,18 +50,36 @@ public sealed class EnrollmentPayment : BaseEntity
         return Result.Ok(enrollmentPayment);
     }
 
-    public void SetSuccessStatus()
+    public void SetStatus(EnrollmentPaymentStatus status)
+    {
+        switch (status)
+        {
+            case EnrollmentPaymentStatus.Success:
+                SetSuccessStatus();
+                break;
+            case EnrollmentPaymentStatus.Fail:
+                SetFailStatus();
+                break;
+            case EnrollmentPaymentStatus.Overdue:
+                SetOverdueStatus();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void SetSuccessStatus()
     {
         Status = EnrollmentPaymentStatus.Success;
         ProcessedAt = DateTime.Now;
     }
 
-    public void SetFailStatus()
+    private void SetFailStatus()
     {
         Status = EnrollmentPaymentStatus.Fail;
         ProcessedAt = DateTime.Now;
     }
 
-    public void SetLateStatus() =>
-        Status = EnrollmentPaymentStatus.Late;
+    private void SetOverdueStatus() =>
+        Status = EnrollmentPaymentStatus.Overdue;
 }

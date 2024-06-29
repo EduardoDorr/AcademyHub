@@ -55,10 +55,28 @@ public sealed class EnrollCommandHandler : IRequestHandler<EnrollCommand, Result
         if (!enrollmentResult.Success)
             return Result.Fail<Guid>(enrollmentResult.Errors);
 
+        if (string.IsNullOrWhiteSpace(user.PaymentGatewayClientId))
+        {
+            var createUserResult = await CreateUserOnPaymentGateway(user);
+
+            if (!createUserResult.Success)
+                return Result.Fail<Guid>(createUserResult.Errors);
+        }
+
         var enrollment = enrollmentResult.Value;
 
         _enrollmentRepository.Create(enrollment);
 
+        var created = await _unitOfWork.SaveChangesAsync(cancellationToken) > 0;
+
+        if (!created)
+            return Result.Fail<Guid>(EnrollmentErrors.CannotBeCreated);
+
+        return Result.Ok(enrollment.Id);
+    }
+
+    private async Task<Result> CreateUserOnPaymentGateway(User? user)
+    {
         var customerModel =
             new CustomerModel(
                 user.Id,
@@ -70,15 +88,10 @@ public sealed class EnrollCommandHandler : IRequestHandler<EnrollCommand, Result
         var paymentGatewayClientIdResult = await _paymentGateway.CreateClientAsync(customerModel);
 
         if (!paymentGatewayClientIdResult.Success)
-            return Result.Fail<Guid>(paymentGatewayClientIdResult.Errors);
+            return Result.Fail(paymentGatewayClientIdResult.Errors);
 
         user.SetPaymentGatewayClientId(paymentGatewayClientIdResult.Value);
 
-        var created = await _unitOfWork.SaveChangesAsync(cancellationToken) > 0;
-
-        if (!created)
-            return Result.Fail<Guid>(EnrollmentErrors.CannotBeCreated);
-
-        return Result.Ok(enrollment.Id);
+        return Result.Ok();
     }
 }

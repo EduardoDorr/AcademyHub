@@ -33,8 +33,19 @@ public class EnrollmentPaymentRepository : IEnrollmentPaymentRepository
             .SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
+    public async Task<EnrollmentPayment?> GetByExternalId(string externalId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.EnrollmentPayments
+            .SingleOrDefaultAsync(e => e.PaymentId == externalId, cancellationToken);
+    }
+
     public void Create(EnrollmentPayment enrollmentPayment)
     {
         _dbContext.EnrollmentPayments.Add(enrollmentPayment);
+    }
+
+    public void Update(EnrollmentPayment enrollmentPayment)
+    {
+        _dbContext.EnrollmentPayments.Update(enrollmentPayment);
     }
 }
